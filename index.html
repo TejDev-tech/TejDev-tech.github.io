@@ -1,4 +1,4 @@
-
+<!--
 <!DOCTYPE html>
 <html>
     <head>
@@ -13,5 +13,208 @@ position:fixed;
     </head>
     <body>
         <p id="p1">Hello World</p>
+    </body>
+</html>
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Reach The Box [Game]</title>
+        <style>
+        @media screen and (max-width:800px){
+            body {
+    user-select:none;
+}
+#cvx{
+    background:rgb(255,455,150);
+    left:0.0%;top:0.0%;position:fixed ;
+}
+#btn1, #btn2, #btn3 {
+    width:0 auto;height:0 auto;
+    background:#00FFFF;
+    padding:3%;border-radius:0px 100px 100px 0px;				
+    z-index:100; border-style:none;
+    position:fixed ; font-size:200%;
+    transform:rotate(-90deg);
+    margin-top:100%;margin-left:75%;
+}
+#btn2{
+    transform:rotate(0deg);
+    margin-left:64%;
+    margin-top:112%;
+    z-index:1000;border-radius:100px 0px 0px 100px;
+}
+#btn3{
+    margin-left:85.5%;
+    transform:rotate(0deg);
+    margin-top:112%;
+}
+#btn4{
+    width:0 auto;height:0 auto;
+    border-style:none;
+    background:rgb(255,155,155);position:fixed;
+    font-family:fantasy;margin-top:15%;
+    z-index:1000;padding:2%;margin-left:80%;
+    font-size:110%;border-radius:100%;
+}
+#scoreBO{
+    width:100%;
+    border-style:none;
+    position:fixed;left:0.0%;
+    height:18%;top:0.0%;
+    background:rgb(155,205,255);
+    z-index:100;
+}
+#score{
+    font-size:130%;
+    border-style:none;
+    background:rgb(200,355,125);
+    position:fixed;
+    width:0 auto;
+    height:0 auto;
+    padding:2%;
+}
+#env{
+    font-size:110%;
+    font-family:fantasy;
+    z-index:1000;
+}
+}
+        </style>
+         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    </head>
+    <body>
+    <div id="btn1"><span id="txt1">⟩</span></div>
+    <div id="btn2"><span id="txt2">⟨</span></div>
+    <div id="btn3"><span id="txt3">⟩</span></div>
+    <div id="btn4"><span id="txt4">Retry</span></div>
+    <div id="scoreBO">
+        <div id="score"></div>
+        
+    </div>
+        <canvas id="cvx"></canvas>
+        <script>
+const cvx = document.querySelector("#cvx");
+cvx.width = innerWidth;cvx.height = innerHeight;
+const ctx = cvx.getContext("2d");
+const btn1 = document.querySelector("#btn1");
+const btn2 = document.querySelector("#btn2");
+const btn3 = document.querySelector("#btn3")
+const btn4 = document.querySelector("#btn4");
+
+
+class Player{constructor(x , y , width , height , color, velo){
+                this.x = x;
+                this.y = y;
+                this.width = width ;
+                this.height = height;
+                this.color = color;
+                this.velo = velo ;}
+   draw(){ctx.beginPath();
+                ctx.rect(this.x,this.y,this.width,this.height)
+                ctx.fillStyle = this.color;
+                ctx.fill();}
+update(){this.draw()
+                this.x = this.x + this.velo.x;
+                this.y = this.y + this.velo.y;}}
+const player = new Player(150,150, 50,50,"rgb(205,105,255)", {
+                x:0,
+                y:1
+            });
+const lifter = new Player(0,400,200,50,"rgb(55,155,255)",{
+                x:0,
+                y:-2.5
+            });
+const lifter1 = new Player(100,550,300,50,"rgb(255,155,255)",{
+                x:0,
+                y:-2.5
+            });
+const stable = new Player(0,90,400,30,"rgb(55,25,55)",{
+              x:0,
+              y:0
+});
+const win = new Player(0,cvx.height-10,400,30,"rgb(400,105,103)",{
+            x:0,
+            y:0
+})
+var scor = 0;
+btn1.addEventListener("click",function(){ player.y -= 15; 
+var sc = document.querySelector("#score");
+scor+=10; sc.innerHTML = "Score:"+scor});
+btn2.addEventListener("click",function(){player.x -= 15;
+var sc = document.querySelector("#score");
+scor+=10; sc.innerHTML = "Score:"+scor});
+btn3.addEventListener("click",function(){player.x += 15;
+var sc = document.querySelector("#score");
+scor+=10; sc.innerHTML = "Score:"+scor});
+function  animate(){
+          ctx.clearRect(0,0,cvx.width, cvx.height);
+            player.draw()
+            player.update()
+            lifter.draw()
+            lifter.update()
+            lifter1.draw()
+            lifter1.update()
+            stable.draw()
+            stable.update()
+            win.draw()
+            win.update()
+if( player.x < lifter.x + 200 && player.x + 200 > lifter.x &&player.y < lifter.y + 50 && player.y + 50 >  lifter.y ){
+                 player.y -=3;
+                 lifter.y +=2;
+             }
+if( player.x - 150 < lifter1.x + 200 && player.x - 150 + 200 >lifter1.x && player.y < lifter1.y + 50 && player.y + 50 >  lifter1.y ){
+                 player.y -=3;
+                 lifter1.y +=2;
+             }
+            if(lifter.y  <  cvx.height - 480){
+                 lifter.y = 950;//increase this value to easy the game and vice-versa.
+             }
+             if(lifter1.y < cvx.height - 480){
+                 lifter1.y = 950;//increase this value to easy the game and vice-versa.
+             }
+             if(player.x  < stable.x + 400 && player.x + 400 >stable.x && player.y < stable.y + 30 && player.y + 30 >  stable.y ){
+                 swal({
+                     title:"Reach The Line [Game] ",
+                     text:"You Lose The Game ",
+                     button:"Retry"
+                 });
+                 clearInterval(t);
+                 player.y +=5;
+                 scor = 0;
+var sc = document.querySelector("#score");
+sc.innerHTML = "Score:"+scor;
+             }
+             if(player.x > cvx.width - 50){
+                 player.x -=15;
+             }
+             if(player.x - 50 > cvx.width ){
+                 player.x += 15;
+             }
+             if(player.x  < win.x + 400 && player.x + 400 >win.x && player.y < win.y + 30 && player.y + 30 >  win.y){
+                 swal({
+                     title:"Reach The Line [Game] ",
+                     text:"You Win The Game",
+                     button:"Replay",
+                     icon:"success"
+                 });
+                 navigator.vibrate(500)
+                 var sc = document.querySelector("#score");
+scor+=100; sc.innerHTML = "Score:"+scor;
+
+             }
+            
+               }
+btn4.addEventListener("click",function(){
+   btn4.style.display = "none";
+   setInterval(animate , 1000/60);
+ scor = 0;
+ var sc = document.querySelector("#score");
+sc.innerHTML = "Score:"+scor;
+navigator.vibrate(100)
+    });var t =   setInterval(animate ,1000/60);
+        </script>
     </body>
 </html>
