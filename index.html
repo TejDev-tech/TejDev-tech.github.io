@@ -1,243 +1,334 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-			<title>🏓 Ping Pong 🏓[Game]</title>
-			<script src="bounci.js"></script>
-			<style>						
-						#cvx{left:0.0%;top:0.0%;position:fixed;
-						background:black; user-select:none;
-						}
-						#plyr, #plyr1{width:15vw;height:15vw;opacity:0.8;color:black; background:radial-gradient(white,grey);
-						border-style:none;z-index:1000;
-						position:fixed;margin-left:15vw;
-						margin-top:5vw;
-						font-weight:bold;}
-						#plyr{
-						margin-left:65vw;
-						}
-						.sup{
-						font-size:4.5vw;
-						margin-left:1.1vw;
-						}
-						.su{
-						margin-left:1.1vw;
-						font-size:4.5vw;
-					  }
-					  #scorP, #scorA{
-					  font-size:6.5vw;
-					  text-align:center;
-					  margin-top:-0.8vw;
-					  }
-					  #btn1{
-	font-size:5vw;font-family:fantasy;
-	width:17vw;height:6vw; padding:1vw;
-	position:fixed;border-style:ridge;
-	background:radial-gradient(white,grey);z-index:0;
-	font-weight:bold;border-color:#00ff00;
-	margin-top:81vw;margin-left:39.5vw;
-	border-width:1vw;border-radius:3vw;
-	}
-					  #replay{
-	width:70vw;height:35vw;background:black;
-	border-style:ridge;border-radius:5vw;
-	border-color:#00ff00;margin-left:11.5vw;
-	border-width:2vw;margin-top:48vw;
-	
-	z-index:0;position:fixed;
+    
+<style>
+    body{
+user-select:none;
+background:black;
+                        }
+                        #cvx{
+                        background:black;
+                        left:0.0%;top:0.0%;
+                        position:fixed;
+                        }
+                        #score, #time{width:15vw;height:15vw;
+                        background:rgb(55,155,255);color:white;
+                        position:fixed;margin-left:32vw;z-index:1;font-weight:bold;font-family:fantasy;
+                        }
+                        .sp, .sp1{font-size:4.5vw;
+                        color:black;margin-left:1vw;
+                    position:fixed;
+                        }
+                        #text, #txt{margin-top:6vw;
+                        font-size:6vw;text-align:center;}
+                        #time{margin-left:48vw;}
+                            #btn1{
+    font-size:5vw;font-family:fantasy;
+    width:17vw;height:6vw; padding:1vw;
+    position:fixed;border-style:ridge;
+    background:radial-gradient(white,grey);z-index:0;font-weight:bold;border-color:#00ff00;
+    margin-top:81vw;margin-left:39.5vw;
+    border-width:1vw;border-radius:3vw;
+    }
+                      #replay{
+    width:70vw;height:35vw;background:black;
+    border-style:ridge;border-radius:5vw;
+    border-color:#00ff00;margin-left:11.5vw;
+    border-width:2vw;margin-top:48vw;
+    
+    z-index:0;position:fixed;
 color:white;font-size:5.7vw;font-family:serif;
-	font-weight:bold;
-	}
-	#text{
-	margin-left:6vw;
-	}
-	#score{
-	margin-left:6vw;
-	}
-	#info{
-	font-size:6vw;font-family:fantasy;
-	color:gold;z-index:1000; position:fixed;
-	font-weight:bold;margin-left:5vw;
-	margin-top:20vw;
-	}
-	#br{
-	margin-left:8vw;
-	}			
-						
-			</style>
+    font-weight:bold;
+    }
+    #tt{
+    margin-left:6vw;
+    }
+    #sre{
+    margin-left:6vw;
+    }
+    #info{
+    font-size:6vw;font-family:fantasy;
+    color:gold;z-index:1000; position:fixed;
+    font-weight:bold;margin-left:5vw;
+    margin-top:20vw;
+    }
+    #br{
+    margin-left:8vw;
+    }
+</style>
+            <title>Shoot The Box [Simple Game]</title>
 </head>
 <body>
-			<div id="replay">
-			<br />
-     <div id="text">Replay the Game:(</div><br />
-			<div id="score">Score:</div>
-			</div>
-			<div id="btn1">Replay</div>
-			<div id="plyr"><sup class="su">Score:</sup>
-			<div id="scorP">0</div>
-			</div>
-			<div id="plyr1"><sup class="sup">Score:</sup>
-			<div id="scorA">0</div>
-			</div>
-			<canvas id="cvx"></canvas>
-<script>
-window.onload= () =>{
-var cvx = document.getElementById('cvx');
+        <div id="replay">
+                        <br />
+                        <div id="tt">Replay the Game:)</div><br />
+                        <div id="sre">🌠🌠🌠</div>
+            </div>
+            <div id="btn1">Replay</div>
+            <div id="score"><sup class="sp">Score:</sup>
+            <div id="text">0</div>
+            </div>
+            <div id="time"><sup class="sp1">Time:</sup>
+            <div id="txt">60</div>
+            </div>
+            <canvas id="cvx"></canvas>
+            <script>
+                window.onload = () =>{
+        
+var cvx = document.querySelector("#cvx");
 cvx.height = innerHeight;
 cvx.width = innerWidth;
-var ctx = cvx.getContext('2d');
-var scorP = document.querySelector('#scorP');
-var scorA = document.querySelector('#scorA');
+var ctx = cvx.getContext("2d");
+var score = document.querySelector("#text");
+var time = document.querySelector("#txt");
 var btn1 = document.querySelector("#btn1");
 var replay = document.querySelector("#replay");
-var sco = document.querySelector("#score");
-var txt = document.querySelector("#text");
-var score = 0;
-var scoree = 0;
-class Rect{
-constructor(x,y,w,h,c,v){
-			this.x = x;
-			this.y = y;
-			this.w = w;
-			this.h = h;
-			this.c = c;
-			this.v = v;
+var sre = document.querySelector("#sre");
+var tt = document.querySelector("#tt");
+var scir = 0;
+var tum = 60;
+class Shoot {
+            constructor(x,y,w,h,c,v){
+                        this.x = x;
+                        this.y = y;
+                        this.w = w;
+                        this.h = h;
+                        this.c = c;
+                        this.v = v
+            }
+            draw(){
+                        ctx.beginPath();
+                        ctx.rect(this.x,this.y,this.w,this.h);
+                        ctx.fillStyle = this.c;
+                        ctx.strokeStyle = "yellow"
+                        ctx.lineWidth = 3
+                        ctx.fill()
+                        ctx.stroke()
+            }
+            update(){
+                        this.draw()
+                        this.x = this.x + this.v.x;
+                        this.y = this.y + this.v.y;
+            }
 }
-draw(){
-			ctx.beginPath()
-			ctx.rect(this.x,this.y,this.w,this.h);
-			ctx.fillStyle = this.c;
-			ctx.fill()
-}
-update(){
-			this.draw()
-			this.x = this.x + this.v.x;
-			this.y = this.y + this.v.y;
-}
-}
-class Circle{
-constructor(x,y,r,c,v){
-	 	this.x = x;
-   this.y = y;
-   this.r = r;
-   this.c = c;
-   this.v = v;
-}
-draw(){
-			ctx.beginPath()
-			ctx.arc(this.x,this.y,this.r,0,2*Math.PI)
-			ctx.fillStyle = this.c;
-			ctx.fill()
-}
-update(){
-			this.x = this.x + this.v.x
-			this.y = this.y + this.v.y
-}
-}
-var circle1 = new Circle(180,50,15,"white",{
-			x:2,
-			y:2
-})
-var rect1 = new Rect(15,50,10,80,"rgb(155,25,155)",{
-			x:0,
-			y:0
+var vlr = ["#ff0000","#00ff00","#00ffff"]
+var index = Math.round(Math.random()*3)
+
+var shoot = new Shoot(100,cvx.height-10,3,50,vlr[index],{
+            x:0,
+            y:0
 });
-var rect2 = new Rect(cvx.width - 25,50,10,80,"rgb(155,25,155)",{
-			x:0,
-			y:1
+var rect = new Shoot(100,50,100,50,"hotpink",{
+            x:3,
+            y:0.5
 });
-function animate() {
-ctx.clearRect(0,0, innerWidth, innerHeight)
-			rect1.draw()
-			rect1.update()
-			rect2.draw()
-			rect2.update()
-			circle1.draw()
-			circle1.update()
-			circle1.y = rect2.y + 40;
-			ctx.setLineDash([13, 5]);/*dashes are 5px and spaces are 3px*/
-ctx.beginPath();
-ctx.moveTo(cvx.width/2,0);
-ctx.lineTo(cvx.width/2, cvx.height);
-ctx.strokeStyle = 'white';
-ctx.stroke();
-			if(rect2.y > cvx.height - 80){
-						rect2.v.y -= 1;
-			}
-			if(rect2.y < 0){
-						rect2.v.y += 1;
-			}
-			if(rect1.y > cvx.height - 80){
-						rect1.y -= 5;
-			}
-			if(rect1.y < 0){
-						rect1.y += 5;
-			}
-			if(circle1.y > cvx.height - 15){
-						circle1.y = cvx.height/2;
-			}
-			if(circle1.y < 0){
-						circle1.v.y += 1;
-			}
-			if(circle1.x > cvx.width - 15){
-						circle1.x = cvx.width/2 - 230;
-						scoree += 1;
-			   scorA.innerHTML = scoree;
-			}
-			if(circle1.x < 0){
-					circle1.x = cvx.width/2 + 230;
-					score += 1;
-			   scorP.innerHTML = score;
-			}
-			if(circle1.x - rect2.w < rect2.x && circle1.x + rect2.w > rect2.x 
-&&circle1.y - rect2.h < rect2.y && circle1.y + rect2.h> rect2.y){
-			circle1.v.x -= 9;
+var st = new Shoot(130,300,100,50,"hotpink",{
+            x:-3,
+            y:0.6
+});
+var st1 = new Shoot(220,200,100,50,"hotpink",{
+            x:3,
+            y:0.7
+});
+var st2 = new Shoot(180,300,100,50,"hotpink",{
+            x:-3,
+            y:0.8
+});
+var rc1 = new Shoot(cvx.width/2,350,100,50,"red",{
+            x:-2.5,
+            y:1
+});
+function inter(){
+            tum -= 1;
+            time.innerHTML = tum;
+            if(tum <= 0){
+                        tum = 0;
+                        time.innerHTML = tum;
+                        
+            }
+            
 }
-if(circle1.x - rect1.w < rect1.x && circle1.x + rect1.w > rect1.x 
-&&circle1.y - rect1.h   < rect1.y && circle1.y + rect1.h - 80 > rect1.y) {
-			circle1.v.x += 9;
-			}
-			if(score >= 5){
-	  		score = 5;
-	  		scorP.innerHTML = score;
-				btn1.style.zIndex = "1000";
-				replay.style.zIndex = "1000";
-				txt.innerHTML = "You Lose";
-				sco.innerHTML = "Score:"+scoree;		
-				cvx.style.filter = "blur(30px)";
-			}
-			if(scoree >= 5){
-		  	scoree = 5;
-		  	scorA.innerHTML = scoree;
-		  	btn1.style.zIndex = "1000";
-				replay.style.zIndex = "1000";
-				txt.innerHTML = "You Win";
-				sco.innerHTML = "Score:"+scoree;
-				cvx.style.filter = "blur(30px)";
-			}
-addEventListener('touchstart',set);
-addEventListener('touchmove',set);
-function set(e){
-			rect1.y = e.touches[0].clientY;
+setInterval(inter,1000);
+function animate(){
+if(tum == 0){
+return (btn1.style.zIndex = "1", replay.style.zIndex = "1",cvx.style.filter = "blur(15px)" )
+            }
+ctx.clearRect(0,0,cvx.width,cvx.height)
+            shoot.draw()
+            shoot.update()
+            rect.draw()
+            rect.update()
+            st.draw()
+            st.update()
+            st1.draw()
+            st1.update()
+            st2.draw()
+            st2.update()
+            rc1.draw()
+            rc1.update()
+            
+addEventListener("touchstart",tet)
+//addEventListener("touchmove",tet)
+function tet(e){
+ if(tum == 0) return 
+shoot.x = e.touches[0].clientX;
+shoot.y = e.touches[0].clientY;
+
+}
+
+if(shoot.y > cvx.height - 100){
+            shoot.v.y += -1.5;
+}
+if(shoot.x - rect.w < rect.x && shoot.x + rect.w > rect.x + 100
+&&shoot.y - rect.h < rect.y && shoot.y + rect.h> rect.y){
+scir+= 1;
+score.innerHTML = scir;
+            rect.v.y -= 3;
+            rect.c = "white";
+            shoot.c = vlr[index]
+            shoot.y = cvx.height - 2000
+}
+if(rect.x > cvx.width - 100) {
+            rect.v.x -= 1;
+}
+if(rect.x < 0 ){
+            rect.v.x += 1
+}
+if(rect.y < -200){
+            rect.y = Math.round(Math.random()*cvx.height-150);
+            rect.v.y = 0
+            rect.c = "orange";
+            shoot.c = vlr[index]
+            rect.v.y += 0.5;
+}
+if(rc1.y > cvx.height + 50){
+            rc1.y = Math.round(Math.random()*cvx.height - 150)
+            rc1.v.y += 0.5;
+}
+if(rect.y > cvx.height + 50){
+            rect.y = Math.round(Math.random()*cvx.height - 150)
+            rect.v.y += 0.5;
+}
+if(st.y > cvx.height + 50){
+            st.y = Math.round(Math.random()*cvx.height - 150)
+            st.v.y += 0.5;
+}
+if(st1.y > cvx.height + 50){
+            st1.y = Math.round(Math.random()*cvx.height - 150)
+            st1.v.y += 0.5;
+}
+if(st2.y > cvx.height + 50){
+            st2.y = Math.round(Math.random()*cvx.height - 150)
+            st2.v.y += 0.5;
+}
+if(shoot.x - st.w < st.x && shoot.x + st.w > st.x + 100
+&&shoot.y - st.h < st.y && shoot.y + st.h> st.y){
+scir+= 1;
+score.innerHTML = scir;
+            st.v.y -= 3;
+            st.c = "white";
+            shoot.c = vlr[index]
+            shoot.y = cvx.height - 2000
+}
+if(st.x > cvx.width - 100) {
+            st.v.x -= 1;
+}
+if(st.x < 0 ){
+            st.v.x += 1
+}
+if(st.y < -200){
+            st.y = Math.round(Math.random()*cvx.height-350);
+            st.v.y = 0
+            st.c = "orange";
+            shoot.c = vlr[index]
+            st.v.y += 0.5;
+}
+
+if(shoot.x - st1.w < st1.x && shoot.x + st1.w > st1.x + 100
+&&shoot.y - st1.h < st1.y && shoot.y + st1.h> st1.y) {
+scir+= 1;
+score.innerHTML = scir;
+            st1.v.y -= 3;
+            st1.c = "white";
+            shoot.c = vlr[index]
+            shoot.y = cvx.height - 2000
+
+}
+if(st1.x > cvx.width - 100) {
+            st1.v.x -= 1;
+}
+if(st1.x < 0 ){
+            st1.v.x += 1
+}
+if(st1.y < -200){
+            st1.y = Math.round(Math.random()*cvx.height-350);
+            st1.v.y = 0
+            st1.c = "orange";
+            shoot.c = vlr[index]
+            st1.v.y += 0.5;
+}
+if(shoot.x - st2.w < st2.x && shoot.x + st2.w > st2.x + 100
+&&shoot.y - st2.h < st2.y && shoot.y + st2.h> st2.y) {
+scir+= 1;
+score.innerHTML = scir;
+            st2.v.y -= 3;
+            st2.c = "white";
+            shoot.c = vlr[index]
+            shoot.y = cvx.height - 2000
+            
+
+}
+if(st2.x > cvx.width - 100) {
+            st2.v.x -= 1;
+}
+if(st2.x < 0 ){
+            st2.v.x += 1
+}
+if(st2.y < -200){
+            st2.y = Math.round(Math.random()*cvx.height-350);
+            st2.v.y = 0
+            st2.c = "orange";
+            shoot.c = vlr[index]
+            st2.v.y += 0.5;
+}
+if(shoot.x - rc1.w < rc1.x && shoot.x + rc1.w > rc1.x + 100
+&&shoot.y - rc1.h < rc1.y && shoot.y + rc1.h> rc1.y){
+scir -= 10;
+score.innerHTML = scir;
+            rc1.v.y -= 3;
+            rc1.c = "white";
+            shoot.c = vlr[index]
+            shoot.y = cvx.height - 2000
+}
+if(rc1.x > cvx.width - 100) {
+            rc1.v.x -= 1;
+}
+if(rc1.x < 0 ){
+            rc1.v.x += 1
+}
+if(rc1.y < -200){
+            rc1.y = Math.round(Math.random()*cvx.height-350);
+            rc1.v.y = 0
+            rc1.c = "red";
+            shoot.c = vlr[index]
+            rc1.v.y += 0.5;
 }
 btn1.addEventListener('touchstart',repet);
-function repet() {
-				ctx.clearRect(0,0,cvx.width,cvx.height);
-				btn1.style.zIndex = "0";
-				replay.style.zIndex = "0";
-				cvx.style.filter = "blur(0px)";
-				score = 0;
-				scoree = 0;
-				scorA.innerHTML = scoree;
-      scorP.innerHTML = score;
-      cvx.style.filter = "blur(0px)";
-}
-}
+    function repet() {
+                ctx.clearRect(0,0,cvx.width,cvx.height);
+                btn1.style.zIndex = "0";
 
- var t = setInterval(animate,1000/60)
+                replay.style.zIndex = "0";
+                cvx.style.filter = "blur(0px)";
+                tum = 60;
+                scir = 0;
 }
 
 
-</script>
+}
+ setInterval(animate, 1000/60);            
+}
+            </script>
 </body>
 </html>
