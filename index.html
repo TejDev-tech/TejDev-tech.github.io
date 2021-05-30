@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
             <title>Canvas Drawing🎨</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
     @media only screen and (min-width:350px){
 *{
@@ -13,7 +15,7 @@ body{
 position:fixed;
 }
 #drawYourSelf{
-display:none;
+display:block;
 }
 #ABOUT{
 display:none;
@@ -37,6 +39,7 @@ display:block;
 #load{
 width:70vw;height:7vh;background:#aafff4;
 border-radius:50vw;top:60vh;left:14vw;
+box-shadow:0 0 2vw grey inset;
 animation:load2 5s 1;
 }
 @keyframes load2{
@@ -432,14 +435,14 @@ top:73vh;left:33vw;
 }
 
 
+    
 </style>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="draw.css" rel="stylesheet" type="text/css">
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Courgette&family=Fredoka+One&family=RocknRoll+One&family=Squada+One&display=swap" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.1.1.js">
 </script>
+
 </head>
 <body>
 <!--<div id="loader">
@@ -773,6 +776,16 @@ ctx.beginPath()
 addEventListener("touchmove",startDraw);
 addEventListener("touchstart",startDraw);
 addEventListener("touchend",endDraw);
+
+colorsB.addEventListener("touchmove",killEvent);
+colorsB.addEventListener("touchstart",killEvent);
+colorsB.addEventListener("touchend",killEvent);
+function killEvent(e){
+    // Disabled. brokes color buttons handling
+    //e.preventDefault();
+    e.stopPropagation();
+    return false;
+}
 class Drawer{
 constructor(x,y){
     this.x = x;
@@ -795,7 +808,7 @@ $("#note").css({"animation":"note 3s 1"}); }
 }
 oninput(){
    this.rv = this.slider.value;
-   this.val.innerHTML = `radius(${this.rv}):`;
+   this.val.innerHTML = `width(${this.rv}):`;
 }
 }
 var pen = new Drawer();
@@ -805,27 +818,18 @@ function resizeCanvas(){
     cvx.width = window.innerWidth;
     cvx.height = window.innerHeight;
 }
-/*{
-"theme_color" : "#f69435"
-"background_color" : "#f69435"
-"display" : "browser"
-"scope" : "/"
-"start_url" : "/tejdev-tech.github.io"
-"name" : "Canvas Drawing"
-"description" : "A simple drawing app. "
-"short_name" : "Draw Yourself"
-}
-*/
-/*function Loadering(){
+
+/*
+function Loadering(){
 const loader = document.querySelector("#loader");
 loader.style.display = "none";
 drawYourSelf.style.display = "block";
 drawAble = true;
 }
-setTimeout(Loadering,800);
+setTimeout(Loadering,6000);
 */
 }
 
 </script>
 </body>
-</html
+</html>
